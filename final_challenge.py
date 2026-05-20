@@ -1,3 +1,22 @@
+#   Create Parent class Restaurant
+# 1. Has restaurant_name, location, rating
+# 2. Has method info() - prints all details
+
+# Create Child class FastFood that inherits Restaurant
+# 1. Has extra attribute delivery_time and min_order
+# 2. Has method order() - prints
+#    "Ordering from restaurant_name
+#     delivery in delivery_time minutes"
+
+# Create Child class FineDiging that inherits Restaurant
+# 1. Has extra attribute dress_code and reservation
+# 2. Has method book_table() - prints
+#    "Table booked at restaurant_name
+#     dress code is dress_code"
+
+# Test everything!
+
+
 class Restaurant:
     def __init__(self, restaurant_name, location, rating):
         self.restaurant = restaurant_name
