@@ -82,36 +82,8 @@ print(repr(rest_1))
 print(len(rest_1))
 print(rest_1 + rest_2)
 
+
 # problem solving 2:
-
-
-class BankAccount:
-    def __init__(self, acconut, balance):
-        self.account = acconut
-        self.balance = balance
-
-    def __str__(self):
-        return "{} - {} ".format(self.account, self.balance)
-
-    def __repr__(self):
-        return "BankAccount('{}', '{}')".format(self.account, self.balance)
-
-    def __len__(self):
-        return len(self.account)
-
-    def __add__(self, other):
-        return self.balance + other.balance
-
-
-acc_1 = BankAccount("sahil", 10000)
-acc_2 = BankAccount("tejas", 20000)
-
-print(acc_1)
-print(repr(acc_1))
-print(len(acc_1))
-print(acc_1 + acc_2)
-
-
 class BankAccount:
     def __init__(self, acconut, balance):
         self.account = acconut

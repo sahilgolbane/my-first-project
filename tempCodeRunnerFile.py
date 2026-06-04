@@ -1,18 +1,29 @@
-class Restaurant:
-    def __init__(self, restautrant, location, rating):
-        self.restaurant = restautrant
-        self.location = location
-        self.rating = rating
+class BankAccount:
+#     def __init__(self, owner, balance):
+#         self.owner = owner
+#         self.balance = balance
 
-    def info(self):
-        print(f"restaurant: {self.restaurant}")
-        print(f"location: {self.location}")
-        print(f"rating: {self.rating}")
+#     @property
+#     def balance(self):
+#         return self._balance
 
-    def str(self):
-        return "{} - {} - {}".format(self.restaurant, self.location, self.rating)
+#     @balance.setter
+#     def balance(self, amount):
+#         if amount < 0:
+#             print("Invalid Amount!")
+#         else:
+#             self._balance = amount
+
+#     @balance.deleter
+#     def balance(self):
+#         print("Account Closed!")
+#         self._balance = 0
 
 
-rest_1 = Restaurant("alka", "mumbai", "4.0")
-
-print(str(rest_1.info()))
+# acc1 = BankAccount("Sahil", 10000)
+# print(acc1.balance)
+# acc1.balance = 5000
+# print(acc1.balance)
+# acc1.balance = -1000
+# del acc1.balance
+# print(acc1.balance)
