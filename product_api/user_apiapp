@@ -1,0 +1,23 @@
+from fastapi import FastAPI
+
+app = FastAPI()
+
+Product =[
+    {"id":1, "product":"laptop", "price":50000},
+    {"id":2, "product":"mobile","price": 30000}
+
+]
+
+@app.get("/products")
+def get_products():
+    return Product
+
+@app.post("/products")
+def post_products(name:str,price:int):
+    new_product = {"id":3, "name":name, "price":price}
+    Product.append(new_product)
+    return new_product
+
+@app.delete("/product/{id}")
+def del_product(id:int):
+    return {"deleted":id}
