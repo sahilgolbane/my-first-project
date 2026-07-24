@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey 
 from database import Base
 
 class Task(Base):
@@ -8,3 +8,11 @@ class Task(Base):
     title = Column(String)
     done = Column(Boolean)
     priority = Column(Integer)
+    user_id = Column(Integer, ForeignKey("users.id"))
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    email = Column(String)
