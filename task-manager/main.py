@@ -1,6 +1,9 @@
+from fastapi import FastAPI, Depends, HTTPException, Header
+from datetime import datetime, timedelta
+from jose import jwt
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-import models, schemas        
+import models, schemas, auth       
 from database import engine, SessionLocal
 
 models.Base.metadata.create_all(bind=engine)
@@ -78,7 +81,44 @@ def get_user_tasks(id:int, db:Session = Depends(get_db)):
     return db.query(models.Task).filter(models.Task.user_id == id).all()       
         
 
+@app.post("/signup")
+def signup(user: schemas.UserCreate, db:Session = Depends(get_db)):
+    hashed = auth.hash_password(user.password)
+    new_user = models.User(name=user.name, email=user.email, hashed_password=hashed)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
 
+
+SECRET_KEY = "my-secret-key-change-this-later"
+ALGORITHM = "HS256"
+
+@app.post("/login")
+def login(email:str, password:str,db:Session = Depends(get_db)):
+     user = db.query(models.User).filter(models.User.email == email).first()
+     if not user:
+         raise HTTPException(status_code=404, detail="Invalid credentials")
+     if not auth.verify_password(password, user.hashed_password):
+         raise HTTPException(status_code=404, detail="Invalid credentials")
+
+     token = jwt.encode({"user_id": user.id}, SECRET_KEY, algorithm=ALGORITHM)
+     return {"Token": token}
+
+def get_current_user(authorization:str = Header(None), db:Session = Depends(get_db)):
+    if not authorization:
+        raise HTTPException(status_code=401, detail="no token provided")
+
+    token = authorization.replace("Bearer ", "")
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    user_id = payload.get("user_id")
+
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    return user
+
+@app.get("/me")
+def read_me(current_user: models.User = Depends(get_current_user)):
+    return {"name": current_user.name, "email": current_user.email}
 
 
     

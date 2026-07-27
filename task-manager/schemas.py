@@ -17,3 +17,4 @@ class TaskUpdate(BaseModel):
 class UserCreate(BaseModel):
     name:str
     email:str
+    password:str
