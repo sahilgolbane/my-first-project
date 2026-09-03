@@ -1,0 +1,33 @@
+=== AUTHENTICATION (login + passwords) ===
+
+THE IDEA (nightclub):
+- signup   = get on the guest list (make an account)
+- login    = show ID, get a wristband (token)
+- protected route = bouncer checks your wristband before letting you in
+
+PASSWORD HASHING (auth.py):
+- NEVER store the real password - store scrambled gibberish
+- hash_password("mypass123") -> "$2b$12$...gibberish..." (one-way, can't reverse)
+- verify_password(typed, stored) -> True/False (does it match?)
+- even if hacker steals the database, they see gibberish not passwords
+
+JWT TOKEN (the wristband):
+- login checks password -> if correct, hands out a token
+- token has user_id hidden inside it
+- jwt.encode(...) makes it, jwt.decode(...) reads it
+- SECRET_KEY signs it so nobody can fake one
+
+PROTECTED ROUTE:
+- get_current_user = the bouncer (a HELPER function, no @app route)
+- reads token from header -> decodes it -> finds the user
+- used via Depends(get_current_user), same as Depends(get_db)
+- no token = blocked (401). valid token = come in
+
+HELPER vs ROUTE:
+- answers a URL? -> needs @app. route
+- helps other functions? -> no route, called via Depends
+- get_db and get_current_user are both helpers
+
+GOTCHA:
+- passlib + new bcrypt clash -> fix: pip install "bcrypt==4.0.1"
+- drop tables in order: tasks BEFORE users (FK dependency)
